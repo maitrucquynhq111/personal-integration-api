@@ -37,7 +37,8 @@ app.post("/create-checkout-session", async (req, res) => {
                 },
             ],
             client_reference_id: req.body?.affiliateId || "",
-            allow_promotion_codes: req.body?.affiliateId ? false : true,
+            // allow_promotion_codes: req.body?.affiliateId ? false : true,
+            allow_promotion_codes: true,
             success_url: `${req.headers.origin}/success`,
             cancel_url: `${req.headers.origin}/cancel`,
         });
