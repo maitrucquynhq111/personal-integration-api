@@ -54,7 +54,6 @@ app.use(express.json());
 app.post("/databases/:databaseId", async function (request, response) {
   const databaseId = request.params.databaseId;
   const query = request.body;
-  console.log("🚀 ~ :58 ~ query:", query);
 
   try {
     const data = await notion.databases.query({
