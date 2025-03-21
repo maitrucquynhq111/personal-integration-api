@@ -76,6 +76,8 @@ app.post("/update-exercise-notion", async function (request, response) {
   ).toLowerCase();
   const listWorkout = note.split("+");
   const requestData = [];
+  let countSets = 1;
+
   listWorkout.map((workout) => {
     const informations = workout.trim().split("-");
 
@@ -94,13 +96,13 @@ app.post("/update-exercise-notion", async function (request, response) {
         },
         properties: {
           Set: {
-            number: index + 1,
+            number: countSets,
           },
           Weight: {
-            number: Number(weight),
+            number: weight ? Number(weight) : 0,
           },
           Reps: {
-            number: Number(reps),
+            number: reps ? Number(reps) : 0,
           },
           Exercise: {
             relation: [
@@ -130,6 +132,7 @@ app.post("/update-exercise-notion", async function (request, response) {
           },
         },
       });
+      countSets++
     }
   });
   const res = [];
