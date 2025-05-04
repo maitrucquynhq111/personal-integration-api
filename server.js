@@ -60,7 +60,7 @@ app.post("/databases/:databaseId", async function (request, response) {
       database_id: databaseId,
       filter: query.filter || {},
     });
-    response.json({ message: "success1", data: data });
+    response.json({ message: "success", data: data });
   } catch (error) {
     response.json({ message: "error", error });
   }
@@ -80,14 +80,17 @@ app.post("/update-exercise-notion", async function (request, response) {
   listWorkout.map((workout) => {
     const informations = workout.trim().split("-");
 
-    let sets = informations.find((item) => item.endsWith("s"));
-    sets = sets?.substring(0, sets.length - 1);
-    let reps = informations.find((item) => item.endsWith("r"));
-    reps = reps?.substring(0, reps.length - 1);
-    let weight = informations.find((item) => item.endsWith("k"));
-    weight = weight?.substring(0, weight.length - 1);
+    let sets = informations.find((item) => item.startsWith("s"));
+    sets = sets?.substring(1, sets.length);
+    let reps = informations.find((item) => item.startsWith("r"));
+    reps = reps?.substring(1, reps.length);
+    let weight = informations.find((item) => item.startsWith("w"));
+    weight = weight?.substring(1, weight.length);
     let level = informations.find((item) => item.startsWith("m"));
     level = level?.substring(1, level.length);
+    let duration = informations.find((item) => item.startsWith("d"));
+    duration = duration?.substring(1, duration.length);
+
     for (let index = 0; index < sets; index++) {
       requestData.push({
         parent: {
@@ -121,6 +124,15 @@ app.post("/update-exercise-notion", async function (request, response) {
                 },
               },
             ],
+          },
+          Duration: {
+            rich_text: [
+              {
+                text: {
+                  content: duration || ''
+                }
+              }
+            ]
           },
           Date: {
             date: {
